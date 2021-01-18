@@ -36,3 +36,21 @@ madule "vpc" {
 		"kubernetes.io/role/internal-elb = "1"
 	}
 }
+
+module "eks" {
+	source = "terraform-aws-modules/eks/aws"
+	version = "~> 12.2"
+
+	cluster_name = local.cluster_name
+	cluster_version = "1.17"
+	subnets = module.vpc.private_subnets
+	vpc_id  = module.vpc.vpc_id
+
+	worker_groups = [
+		{
+			instace_type = "t3.large"
+			asg_max_size = 1
+		}
+	]
+}
+
