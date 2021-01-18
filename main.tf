@@ -10,7 +10,7 @@ locals {
 	cluster_name = "eks-cci-cluster"
 }
 
-madule "vpc" {
+module "vpc" {
 	source = "terraform-aws-modules/vpc/aws"
 	version = "~> 2.48"
 
@@ -28,12 +28,12 @@ madule "vpc" {
 
 	public_subnet_tags = {
 		"kubernetes.io/cluster/${local.cluster_name}" = "shared"
-		"kubernetes.io/role/elb = "1"
+		"kubernetes.io/role/elb" = "1"
 	}
 
 	private_subnet_tags = {
 		"kubernetes.io/cluster/${local.cluster_name}" = "shared"
-		"kubernetes.io/role/internal-elb = "1"
+		"kubernetes.io/role/internal-elb" = "1"
 	}
 }
 
@@ -55,7 +55,7 @@ module "eks" {
 }
 
 data "aws_eks_cluster" "cluster" {
-	name = "module.eks.cluster_id
+	name = "module.eks.cluster_id"
 }
 
 data "aws_eks_cluster_auth" "cluster" {
@@ -72,7 +72,7 @@ provider "kubernetes" {
 }
 
 output "kubectl_config" {
-	description + "kubectl config that can be used to authenticate with the cluster"
+	description = "kubectl config that can be used to authenticate with the cluster"
 	value = module.eks.kubeconfig
 }
 
